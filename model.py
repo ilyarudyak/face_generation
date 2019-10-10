@@ -1,3 +1,4 @@
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
@@ -100,6 +101,40 @@ class Generator(nn.Module):
 
         # last layer + tanh activation
         out = self.t_conv3(out)
-        out = F.tanh(out)
+        out = torch.tanh(out)
 
         return out
+
+
+def weights_init_normal(m):
+    """
+    Applies initial weights to certain layers in a model .
+    The weights are taken from a normal distribution
+    with mean = 0, std dev = 0.02.
+    :param m: A module or layer in a network
+    """
+    # classname will be something like:
+    # `Conv`, `BatchNorm2d`, `Linear`, etc.
+    classname = m.__class__.__name__
+
+    # TODO: Apply initial weights to convolutional and linear layers
+    if hasattr(m, 'weight') and (classname.find('Conv') != -1 or classname.find('Linear') != -1):
+        nn.init.normal_(m.weight.data, mean=0, std=0.02)
+    elif classname.find('BatchNorm2d') != -1:
+        nn.init.normal_(m.weight.data, mean=0, std=0.02)
+
+
+def build_network(d_conv_dim, g_conv_dim, z_size):
+    # define discriminator and generator
+    D = Discriminator(d_conv_dim)
+    G = Generator(z_size=z_size, conv_dim=g_conv_dim)
+
+    # initialize model weights
+    D.apply(weights_init_normal)
+    G.apply(weights_init_normal)
+
+    print(D)
+    print()
+    print(G)
+
+    return D, G
