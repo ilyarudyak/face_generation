@@ -133,8 +133,8 @@ def build_network(d_conv_dim, g_conv_dim, z_size):
     D.apply(weights_init_normal)
     G.apply(weights_init_normal)
 
-    print(D)
-    print()
-    print(G)
+    #print(D)
+    #print()
+    #print(G)
 
     return D, G

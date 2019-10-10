@@ -19,8 +19,8 @@ args = Namespace(
     d_conv_dim=128,
     g_conv_dim=128,
     z_size=100,
-    n_epochs=2,
-    batch_size=512,
+    n_epochs=20,
+    batch_size=256,
     img_size=32
 )
 
